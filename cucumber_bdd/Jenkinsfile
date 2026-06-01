@@ -1,49 +1,56 @@
 pipeline {
     agent any
- 
+
     tools {
         maven 'Maven3'
+        jdk   'JDK'
     }
- 
+
     stages {
- 
         stage('Checkout') {
             steps {
                 git branch: 'main',
                     url: 'https://github.com/masiurraheman91/Selenium-java'
             }
         }
- 
+
         stage('Build') {
             steps {
-                bat 'mvn clean'
+                dir('cucumber_bdd') {
+                    bat 'mvn clean'
+                }
             }
         }
- 
+
         stage('Compile') {
             steps {
-                bat 'mvn compile'
+                dir('cucumber_bdd') {
+                    bat 'mvn compile'
+                }
             }
         }
- 
+
         stage('Test') {
             steps {
-                bat 'mvn test'
+                dir('cucumber_bdd') {
+                    bat 'mvn test'
+                }
             }
         }
- 
+
         stage('Package') {
             steps {
-                bat 'mvn package'
+                dir('cucumber_bdd') {
+                    bat 'mvn package'
+                }
             }
         }
     }
- 
+
     post {
         success {
             echo 'Build Successful'
         }
- 
         failure {
             echo 'Build Failed'
         }
