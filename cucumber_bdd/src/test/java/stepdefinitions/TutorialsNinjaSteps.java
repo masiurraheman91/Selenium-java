@@ -1,7 +1,11 @@
 package stepdefinitions;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import Hooks.TutorialsNinjaHook;
 import io.cucumber.java.en.*;
@@ -18,7 +22,17 @@ public class TutorialsNinjaSteps {
 
     @When("User registers account")
     public void user_registers_account() {
-        TutorialsNinjaHook.driver.findElement(By.xpath("//span[text()='My Account']")).click();
+
+        WebDriverWait wait = new WebDriverWait(TutorialsNinjaHook.driver, Duration.ofSeconds(10));
+
+        WebElement myAccount = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.xpath("//span[text()='My Account']")
+                )
+        );
+
+        myAccount.click();
+
         TutorialsNinjaHook.driver.findElement(By.linkText("Register")).click();
         TutorialsNinjaHook.driver.findElement(By.id("input-firstname")).sendKeys("Masiur");
         TutorialsNinjaHook.driver.findElement(By.id("input-lastname")).sendKeys("Raheman");
@@ -28,6 +42,7 @@ public class TutorialsNinjaSteps {
         TutorialsNinjaHook.driver.findElement(By.id("input-confirm")).sendKeys("test123");
         TutorialsNinjaHook.driver.findElement(By.name("agree")).click();
         TutorialsNinjaHook.driver.findElement(By.xpath("//input[@value='Continue']")).click();
+
         System.out.println("Registration Passed");
     }
 

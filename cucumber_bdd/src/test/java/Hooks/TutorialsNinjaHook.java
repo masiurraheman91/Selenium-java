@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -17,8 +18,15 @@ public class TutorialsNinjaHook {
     public void setup() {
 
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+
+        driver = new ChromeDriver(options);
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://tutorialsninja.com/demo");
     }
@@ -26,6 +34,8 @@ public class TutorialsNinjaHook {
     @After
     public void tearDown() {
 
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
